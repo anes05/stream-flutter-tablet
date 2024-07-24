@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget {
               },
               success: () {
                 toastInfo(msg: "you've logged in successfully");
-                AutoRouter.of(context).push(const SuccessLogin());
+                AutoRouter.of(context).push(const HomeRoute());
               },
               failure: () {
                 toastInfo(msg: "Login failed");

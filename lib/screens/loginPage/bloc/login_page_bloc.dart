@@ -16,7 +16,7 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
           loginButtonPressed: (email,password) async {
             emit(const LoginPageState.loading());
             try{
-              final response= await _dio.post('${_dio.options.baseUrl}/auth/login',data: {
+              final response= await _dio.post('${_dio.options.baseUrl}3020/api/auth-service/auth/login',data: {
                 'email':email,
                 'password':password,
               });

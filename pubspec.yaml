@@ -27,6 +27,9 @@ dependencies:
   openapi:
     path: ./quiz-auth
   shared_preferences: ^2.2.3
+  flutter_side_menu: ^0.4.0
+  questions_live:
+    path: ./questions-live
 
 
 
