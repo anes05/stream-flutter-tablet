@@ -89,7 +89,7 @@ Widget imageWidget(String imagePath, double width, double height) {
       )
   );
 }
-Widget buildTextField(String hintText, String textStyle,String iconName, void Function(String value)? func){
+Widget buildTextField(String hintText, String textStyle,String iconName, void Function(String value)? func,String defaultValue){ {
   return Container(
     width: 325.w,
     height: 50.h,
@@ -111,6 +111,8 @@ Widget buildTextField(String hintText, String textStyle,String iconName, void Fu
           width: 270.w,
           height: 50.h,
           child: TextField(
+            controller: TextEditingController()..text=defaultValue,
+            maxLines: 1,
             onChanged: (value)=>func!(value),
             keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
@@ -148,6 +150,7 @@ Widget buildTextField(String hintText, String textStyle,String iconName, void Fu
       ],
     ),
   );
+}
 }
 Widget buildLogInAndRegButton(String buttonName,String buttonType, void Function()? func){
   return GestureDetector(

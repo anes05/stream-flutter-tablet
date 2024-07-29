@@ -18,7 +18,9 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _emailController = TextEditingController();
+    _emailController..text="test@test.com";
     final TextEditingController _passwordController = TextEditingController();
+    _passwordController..text="password";
     return BlocProvider(
       create: (context) => LoginPageBloc(),
       child: BlocListener<LoginPageBloc, LoginPageState>(
@@ -51,11 +53,11 @@ class LoginPage extends StatelessWidget {
                     _reusableText("Enter your Email address"),
                     buildTextField("Enter your email address", "email", "user", (value) {
                       _emailController.text = value;
-                    }),
+                    },"test@test.com"),
                     _reusableText("Password"),
                     buildTextField("Enter your password", "password", "lock", (value) {
                       _passwordController.text = value;
-                    }),
+                    },"password"),
                     BlocBuilder<LoginPageBloc, LoginPageState>(
                       builder: (context, state) {
                         return buildLogInAndRegButton("Log in", "login", () {

@@ -11,13 +11,14 @@ part 'questions_bloc.freezed.dart';
 
 class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
   final Dio _dio;
+  List<Questions?> listQuestions = [];
   QuestionsBloc() :_dio = DioSingleton().dio, super(const QuestionsState.loadingState()) {
     on<QuestionsEvent>((event, emit) async{
       await event.when(getAllQuestions: () async {
-        emit(QuestionsState.loadingState());
+        emit(const QuestionsState.loadingState());
         try {
           final response = await _dio.get(
-              '${_dio.options.baseUrl}3000/questions',
+              '${_dio.options.baseUrl}3023/api/question-service/questions',
               options: Options(
                   contentType: Headers.jsonContentType,
                   responseType: ResponseType.json
@@ -46,7 +47,32 @@ class QuestionsBloc extends Bloc<QuestionsEvent, QuestionsState> {
         }
 
 
-      });
+      },
+        searchQuestions: (query) async {
+          emit(const QuestionsState.loadingState());
+          final response = await _dio.get(
+            '${_dio.options.baseUrl}3023/api/question-service/questions',
+            options: Options(
+              contentType: Headers.jsonContentType,
+              responseType: ResponseType.json,
+            ),
+          );
+          final data = response.data['data'] as List<dynamic>;
+          listQuestions=data.map((item) {
+            return standardSerializers.deserializeWith(
+              Questions.serializer,
+              item as Map<String, dynamic>,
+            );
+          }).toList();
+          final lowerQuery = query.toLowerCase();
+          final filteredQuestions = listQuestions.where((question) {
+            final questionText = question?.question.toLowerCase() ?? '';
+            return questionText.contains(lowerQuery);
+          }).toList();
+          print(filteredQuestions);
+          emit(QuestionsState.loadedState(filteredQuestions));
+        },
+      );
     });
   }
 }

@@ -34,7 +34,6 @@ class QuestionsPage extends StatelessWidget {
                         onTap: () {
                           print("You pressed on ${questionModel?.question}");
                           showQuestionDialog(context, questionModel!);
-
                         },
                         splashColor: AppColors.splashColor,
                         highlightColor: AppColors.highlightColor,
@@ -42,13 +41,11 @@ class QuestionsPage extends StatelessWidget {
                           color: AppColors.cardBackground,
                           elevation: 4,
                           shadowColor: AppColors.blue.withOpacity(0.2),
-                          // Subtle shadow effect
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            // Rounded corners
                             side: const BorderSide(
                                 color: AppColors.borderColor,
-                                width: 1), // Border with subtle color
+                                width: 1),
                           ),
                           margin: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 20),
@@ -67,8 +64,8 @@ class QuestionsPage extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Wrap(
-                                  spacing: 8.0, // Space between items
-                                  runSpacing: 4.0, // Space between lines
+                                  spacing: 8.0,
+                                  runSpacing: 4.0,
                                   children: questionModel?.options
                                           ?.map((option) {
                                         final optionMap = option.asMap;

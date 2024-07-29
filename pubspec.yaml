@@ -30,6 +30,8 @@ dependencies:
   flutter_side_menu: ^0.4.0
   questions_live:
     path: ./questions-live
+  broadcaster_app:
+    path: ./agora_broadcaster
 
 
 

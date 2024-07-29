@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:questions_live/questions_live.dart';
+
 AppBar buildConsultQuestionsAppBar(String text, BuildContext context) {
   return AppBar(
     bottom: PreferredSize(
@@ -33,6 +34,7 @@ AppBar buildConsultQuestionsAppBar(String text, BuildContext context) {
     ],
   );
 }
+
 void _showAddQuestionDialog(BuildContext context) {
   final TextEditingController questionController = TextEditingController();
   final TextEditingController iconUrlController = TextEditingController();
@@ -45,25 +47,28 @@ void _showAddQuestionDialog(BuildContext context) {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: Text('Add New Question'),
+            title: const Text(
+              'Add New Question',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 children: [
-                  TextField(
+                  _buildTextField(
                     controller: questionController,
-                    decoration: const InputDecoration(labelText: 'Question'),
+                    labelText: 'Question',
                   ),
-                  TextField(
+                  _buildTextField(
                     controller: iconUrlController,
-                    decoration:const InputDecoration(labelText: 'Icon URL'),
+                    labelText: 'Icon URL',
                   ),
                   ...List.generate(optionControllers.length, (index) {
                     return Row(
                       children: [
                         Expanded(
-                          child: TextField(
+                          child: _buildTextField(
                             controller: optionControllers[index],
-                            decoration: InputDecoration(labelText: 'Option ${index + 1}'),
+                            labelText: 'Option ${index + 1}',
                           ),
                         ),
                         Checkbox(
@@ -75,7 +80,7 @@ void _showAddQuestionDialog(BuildContext context) {
                           },
                         ),
                         IconButton(
-                          icon: const Icon(Icons.remove_circle),
+                          icon: const Icon(Icons.remove_circle, color: Colors.red),
                           onPressed: () {
                             setState(() {
                               optionControllers.removeAt(index);
@@ -93,20 +98,24 @@ void _showAddQuestionDialog(BuildContext context) {
                         optionCorrect.add(false);
                       });
                     },
-                    child: Text('Add Option'),
+                    child: const Text(
+                      'Add Option',
+                      style: TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ],
               ),
             ),
             actions: [
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  context.router.popAndPush(const QuestionsRoute());
                 },
               ),
               TextButton(
-                child: Text('Add'),
+                child: const Text('Add'),
                 onPressed: () async {
                   // Prepare the data
                   final question = questionController.text;
@@ -133,8 +142,6 @@ void _showAddQuestionDialog(BuildContext context) {
                     print('Response: ${response.data}');
                     Navigator.of(context).pop();
                     context.pushRoute(QuestionsRoute());
-
-
                   } catch (e) {
                     print('Error: $e');
                   }
@@ -147,6 +154,7 @@ void _showAddQuestionDialog(BuildContext context) {
     },
   );
 }
+
 void showQuestionDialog(BuildContext context, Questions question) {
   final TextEditingController questionController = TextEditingController(text: question.question);
   final TextEditingController iconUrlController = TextEditingController(text: question.iconUrl ?? '');
@@ -163,25 +171,28 @@ void showQuestionDialog(BuildContext context, Questions question) {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: Text('Edit Question'),
+            title: const Text(
+              'Edit Question',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 children: [
-                  TextField(
+                  _buildTextField(
                     controller: questionController,
-                    decoration: InputDecoration(labelText: 'Question'),
+                    labelText: 'Question',
                   ),
-                  TextField(
+                  _buildTextField(
                     controller: iconUrlController,
-                    decoration: InputDecoration(labelText: 'Icon URL'),
+                    labelText: 'Icon URL',
                   ),
                   ...List.generate(optionControllers.length, (index) {
                     return Row(
                       children: [
                         Expanded(
-                          child: TextField(
+                          child: _buildTextField(
                             controller: optionControllers[index],
-                            decoration: InputDecoration(labelText: 'Option ${index + 1}'),
+                            labelText: 'Option ${index + 1}',
                           ),
                         ),
                         Checkbox(
@@ -193,7 +204,7 @@ void showQuestionDialog(BuildContext context, Questions question) {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.remove_circle),
+                          icon: const Icon(Icons.remove_circle, color: Colors.red),
                           onPressed: () {
                             setState(() {
                               optionControllers.removeAt(index);
@@ -211,20 +222,24 @@ void showQuestionDialog(BuildContext context, Questions question) {
                         optionCorrect.add(false);
                       });
                     },
-                    child: Text('Add Option'),
+                    child: const Text(
+                      'Add Option',
+                      style: TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ],
               ),
             ),
             actions: [
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  context.router.popAndPush(const QuestionsRoute()); // Refresh the page
                 },
               ),
               TextButton(
-                child: Text('Delete'),
+                child: const Text('Delete'),
                 onPressed: () async {
                   // Send the DELETE request
                   final dioSingleton = DioSingleton();
@@ -232,14 +247,14 @@ void showQuestionDialog(BuildContext context, Questions question) {
                   try {
                     await dio.delete('${dio.options.baseUrl}3000/questions/${question.id}');
                     Navigator.of(context).pop();
-                    context.router.popAndPush(const QuestionsRoute()); // Refresh the page
+                    context.router.popAndPush(const QuestionsRoute());
                   } catch (e) {
                     print('Error: $e');
                   }
                 },
               ),
               TextButton(
-                child: Text('Modify'),
+                child: const Text('Modify'),
                 onPressed: () async {
                   // Prepare the data
                   final updatedQuestion = questionController.text;
@@ -278,6 +293,20 @@ void showQuestionDialog(BuildContext context, Questions question) {
   );
 }
 
-
-
-
+Widget _buildTextField({
+  required TextEditingController controller,
+  required String labelText,
+}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    ),
+  );
+}

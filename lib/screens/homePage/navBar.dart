@@ -18,6 +18,14 @@ class NavBar extends StatelessWidget {
               AutoRouter.of(context).push(const QuestionsRoute());
 
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.live_tv),
+            title: const Text("Consult Live"),
+            onTap: (){
+              AutoRouter.of(context).push(const LiveRoute());
+
+            },
           )
         ],
       ),

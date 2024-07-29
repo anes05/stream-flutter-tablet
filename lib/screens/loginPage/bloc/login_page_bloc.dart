@@ -26,7 +26,7 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
                 final prefs=await SharedPreferences.getInstance();
                 await prefs.setString('auth_token',token);
                 print('Token: $token');
-                print(role);
+                print('role: $role');
                 emit(const LoginPageState.success());
 
               }else{
