@@ -6,6 +6,8 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:questions_live/questions_live.dart';
+
 @RoutePage()
 class SearchQuestionsPage extends StatelessWidget {
   const SearchQuestionsPage({super.key});
@@ -18,7 +20,9 @@ class SearchQuestionsPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: BlocProvider(
-        create: (context) => QuestionsBloc()..add(const QuestionsEvent.getAllQuestions()),
+        create: (context) =>
+        QuestionsBloc()
+          ..add(const QuestionsEvent.getAllQuestions()),
         child: const SearchQuestionsBody(),
       ),
     );
@@ -37,7 +41,8 @@ class SearchQuestionsBody extends StatelessWidget {
           child: TextField(
             onChanged: (query) {
               print(query);
-              context.read<QuestionsBloc>().add(QuestionsEvent.searchQuestions(query));
+              context.read<QuestionsBloc>().add(
+                  QuestionsEvent.searchQuestions(query));
             },
             decoration: const InputDecoration(
               labelText: 'Search questions...',
@@ -49,7 +54,8 @@ class SearchQuestionsBody extends StatelessWidget {
           child: BlocBuilder<QuestionsBloc, QuestionsState>(
             builder: (context, state) {
               return state.when(
-                loadingState: () => const Center(child: CircularProgressIndicator()),
+                loadingState: () =>
+                const Center(child: CircularProgressIndicator()),
                 loadedState: (questionsList) {
                   return ListView.builder(
                     itemCount: questionsList.length,
@@ -59,23 +65,31 @@ class SearchQuestionsBody extends StatelessWidget {
                         onTap: () {
                           print("You pressed on ${question?.question}");
                           showQuestionDialog(context, question!);
-                          },
+                        },
                         child: ListTile(
                           title: Text(question?.question ?? 'No Question'),
                           trailing: IconButton(
                             style: ButtonStyle(
-                              fixedSize: MaterialStateProperty.all(const Size(24, 24)),
-                              backgroundColor: MaterialStateProperty.all(AppColors.blue),
-                              foregroundColor: MaterialStateProperty.all(AppColors.mainBackground),
+                              fixedSize: MaterialStateProperty.all(
+                                  const Size(24, 24)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  AppColors.blue),
+                              foregroundColor: MaterialStateProperty.all(
+                                  AppColors.mainBackground),
 
                             ),
                             icon: const Icon(Icons.send),
                             onPressed: () {
                               String strUrl = "ws://164.132.53.68:8888/";
-                              String sender = 'broadcaster';
+                              String sender = 'channel01';
                               String reciever = 'channel01';
                               String msgData = '{"store": "live01", "msg": "hello" }';
-                              webSocketSend(sUrl: strUrl, msg:msgData, sender: sender, receiver: reciever, token: 'lazjea', question: question);
+                              webSocketSend(sUrl: strUrl,
+                                  msg: msgData,
+                                  sender: sender,
+                                  receiver: reciever,
+                                  token: 'lazjea',
+                                  question: question);
                             },
                           ),
                         ),
@@ -83,7 +97,8 @@ class SearchQuestionsBody extends StatelessWidget {
                     },
                   );
                 },
-                errorState: () => const Center(child: Text('Failed to load questions')),
+                errorState: () =>
+                const Center(child: Text('Failed to load questions')),
               );
             },
           ),

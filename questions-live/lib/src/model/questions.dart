@@ -40,6 +40,7 @@ abstract class Questions implements Built<Questions, QuestionsBuilder> {
 
   @BuiltValueSerializer(custom: true)
   static Serializer<Questions> get serializer => _$QuestionsSerializer();
+
 }
 
 class _$QuestionsSerializer implements PrimitiveSerializer<Questions> {
@@ -158,5 +159,6 @@ class _$QuestionsSerializer implements PrimitiveSerializer<Questions> {
     );
     return result.build();
   }
+
 }
 
